@@ -107,14 +107,25 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 	}
 });
 // Same as above but for keyboard shortcut
-chrome.commands.onCommand.addListener((command) => {
+chrome.commands.onCommand.addListener(async(command) => {
 	if (command === 'clean-paste') {
-		// as defined in manifest.json
-		chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-			if (tabs[0]) {
-				chrome.tabs.sendMessage(tabs[0].id, { action: 'performCleanPaste' });
-			}
-		});
+		try {
+            // Read the current clipboard contents
+            const text = await navigator.clipboard.readText();
+
+            // Clean tracking parameters from the URL
+            const url = new URL(text);
+            ["utm_source", "utm_medium", "utm_campaign", "fbclid"].forEach(param => url.searchParams.delete(param));
+            const cleanUrl = url.toString();
+
+            // Write the cleaned URL back to clipboard
+            await navigator.clipboard.writeText(cleanUrl);
+
+            console.log("Cleaned URL copied to clipboard:", cleanUrl);
+        } catch (error) {
+            console.error("Clipboard access failed:", error);
+        }
+    
 	}
 });
 
