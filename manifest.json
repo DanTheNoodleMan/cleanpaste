@@ -1,0 +1,40 @@
+{
+	"name": "Clean Paste",
+	"description": "Paste links without tracking parameters and other junk.",
+	"version": "0.1",
+	"manifest_version": 3,
+	"permissions": ["contextMenus", "storage", "clipboardRead", "clipboardWrite", "tabs", "scripting", "activeTab"],
+	"host_permissions": ["http://*/*", "https://*/*"],
+	"omnibox": {
+		"keyword": "clean"
+	},
+	"background": {
+		"service_worker": "background.js",
+		"type": "module"
+	},
+	"action": {
+		"default_popup": "popup.html"
+	},
+	"content_scripts": [
+		{
+			"matches": ["<all_urls>"],
+			"js": ["content.js"],
+			"run_at": "document_end"
+		}
+	],
+	"web_accessible_resources": [
+		{
+			"resources": ["gl-countries.json"],
+			"matches": ["<all_urls>"]
+		}
+	],
+	"commands": {
+		"clean-paste": {
+			"suggested_key": {
+				"default": "Ctrl+Shift+V",
+				"mac": "Command+Shift+V"
+			},
+			"description": "Paste URL without tracking parameters"
+		}
+	}
+}

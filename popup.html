@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CleanPaste</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				margin: 0;
+				padding: 16px;
+				width: 320px;
+				color: #333;
+			}
+
+			.header {
+				display: flex;
+				align-items: center;
+				margin-bottom: 15px;
+				border-bottom: 1px solid #eee;
+				padding-bottom: 10px;
+			}
+
+			.header img {
+				width: 24px;
+				height: 24px;
+				margin-right: 10px;
+			}
+
+			.header h1 {
+				font-size: 18px;
+				margin: 0;
+				font-weight: 500;
+			}
+
+			.stats {
+				background-color: #f5f5f5;
+				padding: 10px;
+				border-radius: 4px;
+				margin-bottom: 15px;
+				text-align: center;
+			}
+
+			.stats p {
+				margin: 5px 0;
+				font-size: 14px;
+			}
+
+			.stats strong {
+				font-size: 20px;
+				color: #4caf50;
+			}
+
+			.settings {
+				margin-bottom: 15px;
+			}
+
+			.settings h2 {
+				font-size: 16px;
+				margin: 0 0 10px 0;
+			}
+
+			.setting-item {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-bottom: 10px;
+			}
+
+			.setting-item label {
+				font-size: 14px;
+			}
+
+			.switch {
+				position: relative;
+				display: inline-block;
+				width: 44px;
+				height: 24px;
+			}
+
+			.switch input {
+				opacity: 0;
+				width: 0;
+				height: 0;
+			}
+
+			.slider {
+				position: absolute;
+				cursor: pointer;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background-color: #ccc;
+				transition: 0.3s;
+				border-radius: 24px;
+			}
+
+			.slider:before {
+				position: absolute;
+				content: '';
+				height: 16px;
+				width: 16px;
+				left: 4px;
+				bottom: 4px;
+				background-color: white;
+				transition: 0.3s;
+				border-radius: 50%;
+			}
+
+			input:checked + .slider {
+				background-color: #4caf50;
+			}
+
+			input:checked + .slider:before {
+				transform: translateX(20px);
+			}
+
+			.param-list {
+				max-height: 200px;
+				overflow-y: auto;
+				border: 1px solid #eee;
+				border-radius: 4px;
+				padding: 5px;
+				margin-bottom: 15px;
+			}
+
+			.param-item {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: 5px;
+				border-bottom: 1px solid #f5f5f5;
+			}
+
+			.param-item:last-child {
+				border-bottom: none;
+			}
+
+			.param-item button {
+				background-color: #f44336;
+				color: white;
+				border: none;
+				border-radius: 2px;
+				padding: 3px 6px;
+				cursor: pointer;
+				font-size: 12px;
+			}
+
+			.add-param {
+				display: flex;
+				margin-top: 10px;
+			}
+
+			.add-param input {
+				flex-grow: 1;
+				padding: 8px;
+				border: 1px solid #ddd;
+				border-radius: 4px 0 0 4px;
+			}
+
+			.add-param button {
+				background-color: #4caf50;
+				color: white;
+				border: none;
+				border-radius: 0 4px 4px 0;
+				padding: 8px 12px;
+				cursor: pointer;
+			}
+
+			.shortcut {
+				margin-top: 15px;
+				text-align: center;
+				background-color: #f5f5f5;
+				padding: 10px;
+				border-radius: 4px;
+			}
+
+			.shortcut kbd {
+				background-color: #333;
+				color: white;
+				padding: 2px 5px;
+				border-radius: 3px;
+				font-family: monospace;
+			}
+
+			footer {
+				font-size: 12px;
+				color: #999;
+				text-align: center;
+				margin-top: 15px;
+				border-top: 1px solid #eee;
+				padding-top: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header">
+			<img src="icons/icon48.png" alt="CleanPaste Logo" />
+			<h1>CleanPaste</h1>
+		</div>
+
+		<div class="stats">
+			<p>Tracking parameters removed</p>
+			<p><strong id="tracking-count">0</strong></p>
+		</div>
+
+		<div class="settings">
+			<h2>Settings</h2>
+
+			<div class="setting-item">
+				<label for="notifications">Show notifications</label>
+				<label class="switch">
+					<input type="checkbox" id="notifications" checked />
+					<span class="slider"></span>
+				</label>
+			</div>
+
+			<div class="setting-item">
+				<label for="clean-default">Make clean paste the default</label>
+				<label class="switch">
+					<input type="checkbox" id="clean-default" />
+					<span class="slider"></span>
+				</label>
+			</div>
+		</div>
+
+		<h2>Tracking Parameters</h2>
+		<div class="param-list" id="param-list">
+			<!-- Parameters will be inserted here via JavaScript -->
+		</div>
+
+		<div class="add-param">
+			<input type="text" id="new-param" placeholder="Add new parameter..." />
+			<button id="add-param-btn">Add</button>
+		</div>
+
+		<div class="shortcut">
+			<p>Keyboard shortcut: <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>V</kbd></p>
+		</div>
+
+		<footer>
+			<p>CleanPaste v1.0 | Keep your links clean and private</p>
+		</footer>
+
+		<script src="popup.js"></script>
+	</body>
+</html>
